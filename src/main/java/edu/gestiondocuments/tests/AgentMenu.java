@@ -34,13 +34,13 @@ public class AgentMenu extends Application {
             // Créer la scène
             Scene scene = new Scene(root);
 
-            // Ajouter la feuille de style
+             //Ajouter la feuille de style
             URL cssUrl = getClass().getResource("/styles/agent.css");
             if (cssUrl == null) {
                 System.out.println("Attention: Impossible de trouver la feuille de style: /styles/agent.css");
             } else {
                 System.out.println("Chargement de la feuille de style: " + cssUrl);
-                scene.getStylesheets().add(cssUrl.toExternalForm());
+               scene.getStylesheets().add(cssUrl.toExternalForm());
             }
 
             // Configurer la fenêtre principale

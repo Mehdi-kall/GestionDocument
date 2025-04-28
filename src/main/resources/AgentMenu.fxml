@@ -2,154 +2,177 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: White;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.gestiondocuments.controller.AgentMenuController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #002d40;" 
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="edu.gestiondocuments.controller.AgentMenuController">
     <children>
-        <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d40;" AnchorPane.bottomAnchor="454.0" AnchorPane.topAnchor="-2.1316282072803006E-14">
+        <AnchorPane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #002d40;" 
+                    AnchorPane.bottomAnchor="510.0" AnchorPane.leftAnchor="0.0" 
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label fx:id="drawerImage" layoutX="7.0" layoutY="7.0">
                     <graphic>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="burger" fitHeight="46.0" fitWidth="32.0" 
+                                 pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@images/menu.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </Label>
-
             </children>
         </AnchorPane>
-        <AnchorPane layoutY="46.0" prefHeight="454.0" prefWidth="44.0" style="-fx-background-color: white;">
+        <AnchorPane fx:id="paneRDV" layoutX="10.0" layoutY="10.0" prefHeight="468.0" 
+                    prefWidth="756.0" style="-fx-background-color: #b4c6db;" visible="false"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="44.0" 
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
             <children>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="44.0" spacing="10.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="20.0">
+                <Label layoutX="224.0" layoutY="294.0" text="Rendez-vous">
+                    <font>
+                        <Font size="48.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="paneDocuments" layoutX="222.0" layoutY="38.0" 
+                    prefHeight="468.0" prefWidth="572.0">
+            <children>
+                <VBox spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" 
+                      AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Gestion des Documents" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="Nouveau Document" onAction="#handleNouveauDocument" 
+                                styleClass="action-button"/>
+                    </HBox>
+                    
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="searchField" promptText="Rechercher..." 
+                                 HBox.hgrow="ALWAYS"/>
+                        <Button text="Rechercher" onAction="#handleRechercher"/>
+                        <ComboBox fx:id="searchTypeCombo" promptText="Type de recherche"/>
+                    </HBox>
+                    
+                    <TableView fx:id="documentsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                            <TableColumn fx:id="titreColumn" text="Titre" prefWidth="150"/>
+                            <TableColumn fx:id="descriptionColumn" text="Description" 
+                                       prefWidth="200"/>
+                            <TableColumn fx:id="dateCreationColumn" text="Date Création" 
+                                       prefWidth="120"/>
+                            <TableColumn fx:id="dateModificationColumn" 
+                                       text="Date Modification" prefWidth="120"/>
+                            <TableColumn fx:id="urlColumn" text="URL" prefWidth="150"/>
+                            <TableColumn fx:id="tagsColumn" text="Tags" prefWidth="150"/>
+                        </columns>
+                    </TableView>
+                    
+                    <VBox fx:id="formPane" spacing="10" visible="false">
+                        <Label text="Détails du Document" styleClass="sub-title"/>
+                        <GridPane hgap="10" vgap="10">
+                            <TextField fx:id="titreField" promptText="Titre" 
+                                     GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <TextArea fx:id="descriptionField" promptText="Description" 
+                                    prefRowCount="3" GridPane.columnIndex="1" 
+                                    GridPane.rowIndex="0"/>
+                            <TextField fx:id="urlField" promptText="URL" 
+                                     GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <TextField fx:id="tagsField" 
+                                     promptText="Tags (séparés par des virgules)" 
+                                     GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            
+                            <HBox spacing="10" alignment="CENTER_RIGHT" 
+                                 GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                <Button text="Annuler" onAction="#handleCancel" 
+                                        styleClass="cancel-button"/>
+                                <Button text="Sauvegarder" onAction="#handleSave" 
+                                        styleClass="save-button"/>
+                            </HBox>
+                        </GridPane>
+                    </VBox>
+                </VBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="paneAffectation" layoutX="44.0" layoutY="55.0" 
+                    prefHeight="512.0" prefWidth="788.0" 
+                    style="-fx-background-color: #87a3c4;" visible="false"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="44.0" 
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
+            <children>
+                <Label layoutX="400.0" layoutY="200.0" text="Affectation">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="opacityPane" prefHeight="200.0" prefWidth="200.0" 
+                    style="-fx-background-color: #000;" visible="false"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="44.0" 
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
+        <AnchorPane layoutY="98.0" prefHeight="526.0" prefWidth="55.0" 
+                    style="-fx-background-color: #002d40;" 
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" 
+                    AnchorPane.rightAnchor="745.0" AnchorPane.topAnchor="38.0">
+            <children>
+                <VBox alignment="TOP_CENTER" onMouseEntered="#MouseEntred" 
+                     prefHeight="200.0" prefWidth="44.0" spacing="6.0" 
+                     style="-fx-background-color: #002d40;" 
+                     AnchorPane.bottomAnchor="243.0" AnchorPane.leftAnchor="0.0" 
+                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                     <children>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="38.0" pickOnBounds="true" 
+                                 preserveRatio="true">
                             <image>
                                 <Image url="@images/document-icon.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/black_calendar.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/request.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/logout.png" />
-                            </image>
-                        </ImageView>
-
-
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-        <AnchorPane layoutX="44.0" layoutY="46.0" prefHeight="454.0" prefWidth="756.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-            <children>
-                <Pane layoutY="21.0" prefHeight="454.0" prefWidth="756.0" style="-fx-background-color: #d9ecf2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <AnchorPane fx:id="paneAffectation" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label layoutX="400.0" layoutY="200.0" text="Affectation">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="paneDocuments" prefHeight="454.0" prefWidth="756.0" style="-fx-background-color: #f4f4f4;">
-                     <children>
-                        <Label text="Documents">
-                           <font>
-                              <Font size="48.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </Pane>
-            </children>
-        </AnchorPane>
-        <AnchorPane fx:id="opacityPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <AnchorPane fx:id="drawerPane" prefHeight="454.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0">
-            <children>
-                <VBox onMouseExited="#MouseExited" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
-                    <children>
-                        <Button alignment="BASELINE_LEFT" onAction="#DocumentsClicked" prefHeight="38.0" prefWidth="179.0" text="Gestion des Documents">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" onAction="#AffectationClicked" prefHeight="38.0" prefWidth="179.0" text="Affectation">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="58.0" prefHeight="38.0" prefWidth="179.0" text="Rndez-vous">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="106.0" prefHeight="38.0" prefWidth="179.0" text="Gestion des demandes">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="154.0" prefHeight="38.0" prefWidth="179.0" text="Reclamation">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="202.0" prefHeight="38.0" prefWidth="179.0" text="Logout">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-        <AnchorPane prefHeight="454.0" prefWidth="44.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0">
-            <children>
-                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="44.0" spacing="13.0" style="-fx-background-color: white;" AnchorPane.topAnchor="20.0">
-                    <children>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/document-icon.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="38.0" pickOnBounds="true" 
+                                 preserveRatio="true">
                             <image>
                                 <Image url="@images/addBlack.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="38.0" pickOnBounds="true" 
+                                 preserveRatio="true">
                             <image>
                                 <Image url="@images/black_calendar.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="38.0" pickOnBounds="true" 
+                                 preserveRatio="true">
                             <image>
                                 <Image url="@images/request.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="38.0" pickOnBounds="true" 
+                                 preserveRatio="true">
                             <image>
                                 <Image url="@images/reviewpng.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="38.0" pickOnBounds="true" 
+                                 preserveRatio="true">
                             <image>
                                 <Image url="@images/logout.png" />
                             </image>
@@ -158,6 +181,67 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <Label fx:id="LabelLateral" layoutY="46.0" onMouseEntered="#MouseEntred" prefHeight="454.0" prefWidth="38.0" />
+        <AnchorPane fx:id="drawerPane" prefHeight="468.0" prefWidth="178.0" 
+                    style="-fx-background-color: #002d40;" visible="false"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="44.0" 
+                    AnchorPane.rightAnchor="572.0" AnchorPane.topAnchor="38.0">
+            <children>
+                <VBox layoutY="32.8" onMouseExited="#MouseExited" prefHeight="435.0" 
+                     prefWidth="178.0" spacing="6.0" style="-fx-background-color: #002d40;" 
+                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" 
+                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                    <children>
+                        <Button alignment="BASELINE_LEFT" layoutX="5.0" 
+                                onAction="#DocumentsClicked" prefHeight="37.0" 
+                                prefWidth="187.0" style="-fx-background-color: #002d40;" 
+                                text="Gestion des Documents" textFill="#d4964a">
+                            <font>
+                                <Font name="Bauhaus 93" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="5.0" 
+                                onAction="#AffectationClicked" prefHeight="37.0" 
+                                prefWidth="187.0" style="-fx-background-color: #002d40;" 
+                                text="Affectation" textFill="#d4964a">
+                            <font>
+                                <Font name="Bauhaus 93" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="5.0" 
+                                onAction="#Render_Vous" prefHeight="37.0" 
+                                prefWidth="188.0" style="-fx-background-color: #002d40;" 
+                                text="Rendez-vous" textFill="#d4964a">
+                            <font>
+                                <Font name="Bauhaus 93" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="5.0" 
+                                onAction="#GestionDemande" prefHeight="37.0" 
+                                prefWidth="191.0" style="-fx-background-color: #002d40;" 
+                                text="Gestion des demandes" textFill="#d4964a">
+                            <font>
+                                <Font name="Bauhaus 93" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="5.0" 
+                                onAction="#Reclamation" prefHeight="37.0" 
+                                prefWidth="186.0" style="-fx-background-color: #002d40;" 
+                                text="Reclamation" textFill="#d4964a">
+                            <font>
+                                <Font name="Bauhaus 93" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="5.0" 
+                                onAction="#Logout" prefHeight="37.0" prefWidth="186.0" 
+                                style="-fx-background-color: #002d40;" text="Logout" 
+                                textFill="#d4964a">
+                            <font>
+                                <Font name="Bauhaus 93" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

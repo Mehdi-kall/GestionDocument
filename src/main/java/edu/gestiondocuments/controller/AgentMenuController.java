@@ -1,132 +1,229 @@
 package edu.gestiondocuments.controller;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
+import edu.gestiondocuments.entities.Documents;
+import edu.gestiondocuments.services.ServiceDocuments;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
 
-import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AgentMenuController implements Initializable {
-    private boolean drawerOuvert = false;
-    @FXML
-    private AnchorPane opacityPane, drawerPane, paneDocuments, paneAffectation;
+    private final ServiceDocuments serviceDocuments = new ServiceDocuments();
+    private Documents documentEnEdition = null;
 
-    @FXML
-    private Label drawerImage, LabelLateral, LabelFermiture;
-
-    @FXML
-    private ImageView exit;
+    @FXML private TableView<Documents> documentsTable;
+    @FXML private TableColumn<Documents, Integer> idColumn;
+    @FXML private TableColumn<Documents, String> titreColumn;
+    @FXML private TableColumn<Documents, String> descriptionColumn;
+    @FXML private TableColumn<Documents, LocalDateTime> dateCreationColumn;
+    @FXML private TableColumn<Documents, LocalDateTime> dateModificationColumn;
+    @FXML private TableColumn<Documents, String> urlColumn;
+    @FXML private TableColumn<Documents, List<String>> tagsColumn;
+    
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> searchTypeCombo;
+    @FXML private VBox formPane;
+    @FXML private TextField titreField;
+    @FXML private TextArea descriptionField;
+    @FXML private TextField urlField;
+    @FXML private TextField tagsField;
+    @FXML private AnchorPane drawerPane;
+    @FXML private AnchorPane opacityPane;
+    @FXML private AnchorPane paneDocuments;
+    @FXML private AnchorPane paneRDV;
+    @FXML private AnchorPane paneAffectation;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        opacityPane.setVisible(false);
+        // Configuration des colonnes
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("idDocument"));
+        titreColumn.setCellValueFactory(new PropertyValueFactory<>("titreDocument"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionDocument"));
+        dateCreationColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreationDocument"));
+        dateModificationColumn.setCellValueFactory(new PropertyValueFactory<>("dateModificationDocument"));
+        urlColumn.setCellValueFactory(new PropertyValueFactory<>("urlDocument"));
+        tagsColumn.setCellValueFactory(new PropertyValueFactory<>("tagsDocuments"));
 
+        // Configuration du ComboBox de recherche
+        searchTypeCombo.setItems(FXCollections.observableArrayList(
+            "Titre/Description", "Tags"
+        ));
+        searchTypeCombo.getSelectionModel().selectFirst();
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), opacityPane);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.play();
+        // Chargement initial des documents
+        refreshDocuments();
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), drawerPane);
-        translateTransition.setByX(-600);
-        translateTransition.play();
-
-
-        drawerOuvert = false;
-
-
-        drawerImage.setOnMouseClicked(event -> {
-            if (!drawerOuvert) {
-                ouvrirMenu();
-            } else {
-                fermerMenu();
+        // Configuration de la sélection
+        documentsTable.getSelectionModel().selectedItemProperty().addListener(
+            (obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    showDocumentDetails(newSelection);
+                }
             }
-        });
-
-
-        opacityPane.setOnMouseClicked(event -> {
-            fermerMenu();
-        });
+        );
     }
 
+    @FXML
+    private void handleNouveauDocument() {
+        documentEnEdition = null;
+        clearForm();
+        formPane.setVisible(true);
+    }
 
-    private void ouvrirMenu() {
+    @FXML
+    private void handleRechercher() {
+        String searchText = searchField.getText().trim();
+        String searchType = searchTypeCombo.getValue();
+
+        List<Documents> results;
+        if (searchType.equals("Tags")) {
+            results = serviceDocuments.rechercherDocumentParTag(searchText);
+        } else {
+            results = serviceDocuments.rechercherDocument(searchText);
+        }
+
+        documentsTable.setItems(FXCollections.observableArrayList(results));
+    }
+
+    @FXML
+    private void handleSave() {
+        if (!validateForm()) {
+            return;
+        }
+
+        Documents document = documentEnEdition != null ? 
+            documentEnEdition : new Documents();
+
+        document.setTitreDocument(titreField.getText());
+        document.setDescriptionDocument(descriptionField.getText());
+        document.setUrlDocument(urlField.getText());
+        document.setTagsDocuments(Arrays.asList(tagsField.getText().split(",")));
+
+        if (documentEnEdition == null) {
+            document.setDateCreationDocument(LocalDateTime.now());
+            serviceDocuments.ajouterDocument(document);
+        } else {
+            document.setDateModificationDocument(LocalDateTime.now());
+            serviceDocuments.modifierDocument(document);
+        }
+
+        refreshDocuments();
+        clearForm();
+        formPane.setVisible(false);
+    }
+
+    @FXML
+    private void handleCancel() {
+        clearForm();
+        formPane.setVisible(false);
+    }
+
+    private void showDocumentDetails(Documents document) {
+        documentEnEdition = document;
+        titreField.setText(document.getTitreDocument());
+        descriptionField.setText(document.getDescriptionDocument());
+        urlField.setText(document.getUrlDocument());
+        tagsField.setText(String.join(",", document.getTagsDocuments()));
+        formPane.setVisible(true);
+    }
+
+    private void clearForm() {
+        documentEnEdition = null;
+        titreField.clear();
+        descriptionField.clear();
+        urlField.clear();
+        tagsField.clear();
+    }
+
+    private boolean validateForm() {
+        String titre = titreField.getText().trim();
+        if (titre.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de validation", 
+                     "Le titre est obligatoire.");
+            return false;
+        }
+        return true;
+    }
+
+    private void refreshDocuments() {
+        List<Documents> documents = serviceDocuments.getAllDocuments();
+        documentsTable.setItems(FXCollections.observableArrayList(documents));
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void MouseEntred() {
+        drawerPane.setVisible(true);
         opacityPane.setVisible(true);
-
-
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), opacityPane);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(0.15);
-        fadeTransition.play();
-
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), drawerPane);
-        translateTransition.setToX(0); // Aller à 0 (ouvrir le menu)
-        translateTransition.play();
-
-
-        drawerOuvert = true;
     }
 
-
-    private void fermerMenu() {
-        // Animation de fade pour opacityPane
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), opacityPane);
-        fadeTransition.setFromValue(0.15);
-        fadeTransition.setToValue(0);
-        fadeTransition.play();
-
-
-        fadeTransition.setOnFinished(event -> {
-            opacityPane.setVisible(false);
-        });
-
-        // Animation de translation pour drawerPane
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), drawerPane);
-        translateTransition.setToX(-600);
-        translateTransition.play();
-
-
-        drawerOuvert = false;
+    @FXML
+    private void MouseExited() {
+        drawerPane.setVisible(false);
+        opacityPane.setVisible(false);
     }
 
-    public void DocumentsClicked(ActionEvent actionEvent) {
+    @FXML
+    private void DocumentsClicked() {
         paneDocuments.setVisible(true);
+        paneRDV.setVisible(false);
         paneAffectation.setVisible(false);
-        fermerMenu();
+        drawerPane.setVisible(false);
+        opacityPane.setVisible(false);
     }
 
-    public void AffectationClicked(ActionEvent actionEvent) {
+    @FXML
+    private void AffectationClicked() {
         paneDocuments.setVisible(false);
+        paneRDV.setVisible(false);
         paneAffectation.setVisible(true);
-        fermerMenu();
+        drawerPane.setVisible(false);
+        opacityPane.setVisible(false);
     }
 
-    public void MouseEntred(MouseEvent mouseEvent) {
-        if (!drawerOuvert) {
-            ouvrirMenu();
-        }
+    @FXML
+    private void Render_Vous() {
+        paneDocuments.setVisible(false);
+        paneRDV.setVisible(true);
+        paneAffectation.setVisible(false);
+        drawerPane.setVisible(false);
+        opacityPane.setVisible(false);
     }
 
-    public void MouseExited(MouseEvent mouseEvent) {
-        if(drawerOuvert){
-            fermerMenu();
-        }
+    @FXML
+    private void GestionDemande() {
+        // À implémenter selon les besoins
+        drawerPane.setVisible(false);
+        opacityPane.setVisible(false);
+    }
+
+    @FXML
+    private void Reclamation() {
+        // À implémenter selon les besoins
+        drawerPane.setVisible(false);
+        opacityPane.setVisible(false);
+    }
+
+    @FXML
+    private void Logout() {
+//        // Implémenter la logique de déconnexion
+//        Stage stage = (Stage) drawerPane.getScene().getWindow();
+//        stage.close();
     }
 }
 

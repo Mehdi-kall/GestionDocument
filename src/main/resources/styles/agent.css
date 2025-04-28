@@ -127,6 +127,25 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+/* Style pour l'icône du menu */
+#drawerImage {
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+#drawerImage:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.6), 10, 0, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#drawerImage ImageView {
+    -fx-opacity: 0.9;
+}
+
+#drawerImage:hover ImageView {
+    -fx-opacity: 1;
+}
 
 /* Style pour la grille */
 .grid-pane {
