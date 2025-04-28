@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.gestiondocuments.controller.AgentController"
+            prefHeight="600.0" prefWidth="800.0"
+            stylesheets="@styles/agent.css">
+
+    <top>
+        <VBox>
+            <!-- Logo en haut -->
+            <ImageView fitHeight="60" fitWidth="200" preserveRatio="true">
+                <Image url="@images/logo.jpg"/>
+            </ImageView>
+            
+            <MenuBar>
+                <Menu text="Fichier">
+                    <MenuItem text="Nouveau document" onAction="#handleNouveauDocument"/>
+                    <MenuItem text="Quitter" onAction="#handleQuitter"/>
+                </Menu>
+                <Menu text="Navigation">
+                    <MenuItem text="Accueil" onAction="#afficherAccueil"/>
+                    <MenuItem text="Rendez-vous" onAction="#afficherRendezVous"/>
+                </Menu>
+            </MenuBar>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox fx:id="contentArea" spacing="20">
+            <!-- Section Accueil -->
+            <VBox fx:id="accueilSection" styleClass="section">
+                <Label text="Tableau de bord" styleClass="section-title"/>
+                <GridPane vgap="10" hgap="10">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <Button text="Gérer les documents" 
+                            onAction="#handleGererDocuments"
+                            styleClass="action-button"
+                            GridPane.columnIndex="0" 
+                            GridPane.rowIndex="0">
+                        <graphic>
+                            <ImageView fitHeight="24" fitWidth="24">
+                                <Image url="@images/document-icon.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </GridPane>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

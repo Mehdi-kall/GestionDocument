@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.gestiondocuments.controller.GestionDocumentsController"
+            styleClass="content-pane">
+
+    <VBox spacing="10" AnchorPane.topAnchor="0.0" 
+          AnchorPane.rightAnchor="0.0" 
+          AnchorPane.bottomAnchor="0.0" 
+          AnchorPane.leftAnchor="0.0"
+          styleClass="gestion-documents">
+        
+        <!-- Titre -->
+        <Label text="Gestion des Documents" styleClass="title"/>
+
+        <!-- Barre d'outils -->
+        <HBox spacing="10" styleClass="toolbar">
+            <Button text="Ajouter" onAction="#handleAjouter" styleClass="action-button">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <Image url="@images/add-icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Modifier" onAction="#handleModifier" styleClass="action-button">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <Image url="@images/edit-icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Supprimer" onAction="#handleSupprimer" styleClass="action-button">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <Image url="@images/delete-icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <TextField fx:id="searchField" promptText="Rechercher..."/>
+            <Button text="Rechercher" onAction="#handleRechercher" styleClass="action-button">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <Image url="@images/search-icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <!-- TableView pour la liste des documents -->
+        <TableView fx:id="documentsTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="titreColumn" text="Titre" prefWidth="150"/>
+                <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200"/>
+                <TableColumn fx:id="dateCreationColumn" text="Date création" prefWidth="150"/>
+                <TableColumn fx:id="dateModificationColumn" text="Date modification" prefWidth="150"/>
+                <TableColumn fx:id="urlColumn" text="URL" prefWidth="150"/>
+                <TableColumn fx:id="tagsColumn" text="Tags" prefWidth="150"/>
+            </columns>
+        </TableView>
+
+        <!-- Formulaire -->
+        <VBox fx:id="formPane" spacing="10" styleClass="form" visible="false">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="Détails du document" styleClass="section-title"/>
+            
+            <VBox spacing="5" styleClass="form-field">
+                <Label text="Titre :" styleClass="form-label"/>
+                <TextField fx:id="titreField"/>
+            </VBox>
+            
+            <VBox spacing="5" styleClass="form-field">
+                <Label text="Description :" styleClass="form-label"/>
+                <TextArea fx:id="descriptionField" wrapText="true"/>
+            </VBox>
+            
+            <VBox spacing="5" styleClass="form-field">
+                <Label text="URL :" styleClass="form-label"/>
+                <TextField fx:id="urlField"/>
+            </VBox>
+            
+            <VBox spacing="5" styleClass="form-field">
+                <Label text="Tags (séparés par des virgules) :" styleClass="form-label"/>
+                <TextField fx:id="tagsField"/>
+            </VBox>
+            
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Annuler" onAction="#handleCancel" styleClass="cancel-button"/>
+                <Button text="Enregistrer" onAction="#handleSave" styleClass="save-button"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</AnchorPane>

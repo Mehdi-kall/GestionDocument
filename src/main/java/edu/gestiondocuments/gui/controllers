@@ -1,0 +1,2 @@
+package edu.gestiondocuments.gui.controllers;
+// Contiendra les contrôleurs qui gèrent les interactions entre les vues et le modèle
