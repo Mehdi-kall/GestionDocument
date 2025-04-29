@@ -333,3 +333,22 @@
     -fx-background-color: white;
     -fx-padding: 20;
 }
+
+.close-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 100px;
+}
+
+.close-button:hover {
+    -fx-background-color: derive(#e74c3c, 10%);
+}
+
+#imagePopup {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+}
+
+#documentImageView {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}

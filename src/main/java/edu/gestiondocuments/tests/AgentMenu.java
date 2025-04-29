@@ -45,10 +45,11 @@ public class AgentMenu extends Application {
 
             // Configurer la fenêtre principale
             primaryStage.setTitle("Menu Agent");
+            primaryStage.getIcons().add(new javafx.scene.image.Image(getClass().getResource("/images/logo.jpg").toExternalForm()));
             primaryStage.setScene(scene);
 
             // Définir les dimensions de la fenêtre
-            primaryStage.setWidth(800);
+            primaryStage.setWidth(810);
             primaryStage.setHeight(600);
 
             // Empêcher le redimensionnement de la fenêtre

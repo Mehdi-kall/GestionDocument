@@ -50,7 +50,6 @@ public class ServiceDocuments implements IServiceDocument {
 
     @Override
     public void modifierDocument(Documents document) {
-        // D'abord, récupérer le document existant
         List<Documents> existingDocs = rechercherDocumentParId(document.getIdDocument());
         if (existingDocs.isEmpty()) {
             System.out.println("Document non trouvé.");
@@ -62,8 +61,7 @@ public class ServiceDocuments implements IServiceDocument {
                 "date_modification_document=?, url_document=?, tags_documents=? WHERE id_document=?";
         
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
-            // Utiliser les nouvelles valeurs ou conserver les anciennes si null
-            pst.setString(1, document.getTitreDocument() != null ? 
+            pst.setString(1, document.getTitreDocument() != null ?
                 document.getTitreDocument() : existingDoc.getTitreDocument());
             pst.setString(2, document.getDescriptionDocument() != null ? 
                 document.getDescriptionDocument() : existingDoc.getDescriptionDocument());
@@ -71,7 +69,6 @@ public class ServiceDocuments implements IServiceDocument {
             pst.setString(4, document.getUrlDocument() != null ? 
                 document.getUrlDocument() : existingDoc.getUrlDocument());
             
-            // Gestion des tags
             String tagsStr = null;
             if (document.getTagsDocuments() != null && !document.getTagsDocuments().isEmpty()) {
                 tagsStr = String.join(",", document.getTagsDocuments());

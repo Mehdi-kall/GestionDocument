@@ -119,3 +119,11 @@
     -fx-background-color: white;
     -fx-border-color: #1a237e;
 }
+
+.delete-button {
+    -fx-background-color: #e74c3c;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}

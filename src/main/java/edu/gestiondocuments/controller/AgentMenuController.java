@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.net.URL;
@@ -41,7 +42,6 @@ public class AgentMenuController implements Initializable {
     @FXML private AnchorPane paneDocuments;
     @FXML private AnchorPane paneRDV;
     @FXML private AnchorPane paneAffectation;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Configuration des colonnes
@@ -165,6 +165,15 @@ public class AgentMenuController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    public void BurgerClicked(MouseEvent mouseEvent) {
+        if (!drawerPane.isVisible()) {
+            drawerPane.setVisible(true);
+            opacityPane.setVisible(true);
+        } else {
+            drawerPane.setVisible(false);
+            opacityPane.setVisible(false);
+        }
+    }
 
     @FXML
     private void MouseEntred() {
@@ -225,5 +234,37 @@ public class AgentMenuController implements Initializable {
 //        Stage stage = (Stage) drawerPane.getScene().getWindow();
 //        stage.close();
     }
+
+    @FXML
+    private void handleSupprimer() {
+        Documents selectedDocument = documentsTable.getSelectionModel().getSelectedItem();
+        if (selectedDocument == null) {
+            showAlert(Alert.AlertType.WARNING, "Attention", 
+                     "Veuillez sélectionner un document à supprimer.");
+            return;
+        }
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation de suppression");
+        confirmation.setHeaderText(null);
+        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer le document \"" + 
+                                  selectedDocument.getTitreDocument() + "\" ?");
+
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    serviceDocuments.supprimerDocument(selectedDocument.getIdDocument());
+                    refreshDocuments();
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", 
+                             "Le document a été supprimé avec succès.");
+                } catch (Exception e) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", 
+                             "Une erreur est survenue lors de la suppression : " + e.getMessage());
+                }
+            }
+        });
+    }
+
+
 }
 
