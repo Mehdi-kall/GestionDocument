@@ -18,7 +18,6 @@ public class AgentMenu extends Application {
         try {
             System.out.println("Démarrage de l'application AgentMenu...");
 
-            // Charger le fichier FXML
             System.out.println("Chargement du fichier FXML: /AgentMenu.fxml");
             URL fxmlUrl = getClass().getResource("/AgentMenu.fxml");
             if (fxmlUrl == null) {
@@ -31,10 +30,8 @@ public class AgentMenu extends Application {
             Parent root = loader.load();
             System.out.println("Contenu FXML chargé avec succès.");
 
-            // Créer la scène
             Scene scene = new Scene(root);
 
-             //Ajouter la feuille de style
             URL cssUrl = getClass().getResource("/styles/agent.css");
             if (cssUrl == null) {
                 System.out.println("Attention: Impossible de trouver la feuille de style: /styles/agent.css");
@@ -43,7 +40,7 @@ public class AgentMenu extends Application {
                scene.getStylesheets().add(cssUrl.toExternalForm());
             }
 
-            // Configurer la fenêtre principale
+
             primaryStage.setTitle("Menu Agent");
             primaryStage.getIcons().add(new javafx.scene.image.Image(getClass().getResource("/images/logo.jpg").toExternalForm()));
             primaryStage.setScene(scene);
@@ -52,10 +49,10 @@ public class AgentMenu extends Application {
             primaryStage.setWidth(810);
             primaryStage.setHeight(600);
 
-            // Empêcher le redimensionnement de la fenêtre
+
             primaryStage.setResizable(false);
 
-            // Afficher la fenêtre
+
             System.out.println("Affichage de la fenêtre principale...");
             primaryStage.show();
             System.out.println("Application démarrée avec succès.");
@@ -64,17 +61,12 @@ public class AgentMenu extends Application {
             e.printStackTrace();
             System.err.println("Erreur lors du chargement de l'interface: " + e.getMessage());
 
-            // Afficher une boîte de dialogue d'erreur
             showErrorAlert("Erreur de l'application", "Impossible de démarrer l'application", e.getMessage());
-
-            // Fermer l'application après l'erreur
             Platform.exit();
         }
     }
 
-    /**
-     * Affiche une boîte de dialogue d'erreur
-     */
+
     private void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -84,7 +76,6 @@ public class AgentMenu extends Application {
     }
 
     public static void main(String[] args) {
-        // Assurez-vous que les modules JavaFX sont disponibles
         try {
             System.out.println("Lancement de l'application AgentMenu...");
             launch(args);

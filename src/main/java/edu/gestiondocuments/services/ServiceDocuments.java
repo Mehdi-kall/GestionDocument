@@ -192,7 +192,6 @@ public class ServiceDocuments implements IServiceDocument {
         return doc;
     }
 
-    // Méthode utilitaire pour récupérer tous les documents
     public List<Documents> getAllDocuments() {
         return rechercherDocument("");
     }
