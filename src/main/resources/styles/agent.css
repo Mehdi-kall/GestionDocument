@@ -10,6 +10,8 @@
     -fx-background-color: linear-gradient(to right bottom, #1a237e, #0288d1, #00796b);
     -fx-background-size: 300% 300%;
     -fx-animation: gradientAnimation 10s ease infinite;
+    -fx-spacing: 15;
+    -fx-padding: 20;
 }
 
 .border-pane {
@@ -76,11 +78,20 @@
     -fx-font-family: "System";
 }
 
+/* Style pour le titre de section */
 .section-title {
-    -fx-font-size: 28px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #1a237e;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 0);
+    -fx-padding: 5 0 5 0;
+    -fx-min-width: 250px;
+}
+
+/* Style pour le conteneur de titre */
+HBox.title-container {
+    -fx-padding: 10 0 20 0;
+    -fx-alignment: center-left;
+    -fx-min-height: 50px;
 }
 
 .sub-title {
@@ -178,10 +189,14 @@
 
 /* Style pour les boutons d'action */
 .action-button {
-    -fx-min-width: 200;
-    -fx-graphic-text-gap: 15;
-    -fx-alignment: center-left;
-    -fx-padding: 15 20;
+    -fx-background-color: #1a237e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-min-width: 150px;
+    -fx-max-width: 200px;
 }
 
 .action-button .image-view {
@@ -229,16 +244,33 @@
     -fx-background-color: transparent;
     -fx-border-color: #e0e0e0;
     -fx-border-radius: 5;
+    -fx-min-width: 800px;
+    -fx-pref-width: 850px;
+    -fx-min-height: 300px;
 }
 
 .table-view .column-header {
     -fx-background-color: #1a237e;
     -fx-padding: 10;
+    -fx-min-height: 30px;
+    -fx-pref-height: 35px;
 }
 
 .table-view .column-header .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1a237e;
+    -fx-min-height: 35px;
+    -fx-pref-height: 40px;
+}
+
+/* Assurer que les colonnes ont une largeur minimale */
+.table-view .table-column {
+    -fx-min-width: 50px;
 }
 
 .table-view .table-row-cell {
@@ -261,6 +293,8 @@
     -fx-border-radius: 5;
     -fx-padding: 8;
     -fx-font-size: 14px;
+    -fx-min-width: 200px;
+    -fx-pref-width: 300px;
 }
 
 .text-field:focused, .text-area:focused {
@@ -351,4 +385,108 @@
 
 #documentImageView {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+/* Style pour le champ de fichier */
+.file-field {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 3;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 3;
+    -fx-padding: 8;
+    -fx-pref-width: 300px;
+    -fx-min-width: 250px;
+    -fx-font-size: 14px;
+}
+
+/* Style pour le conteneur du champ de fichier */
+HBox.file-field-container {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-pref-width: 100%;
+    -fx-min-width: 350px;
+}
+
+/* Style pour le bouton parcourir */
+.browse-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15;
+    -fx-background-radius: 3;
+    -fx-min-width: 100px;
+}
+
+.browse-button:hover {
+    -fx-background-color: #45a049;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 0);
+}
+
+/* Espacement pour éviter les chevauchements */
+.button-container {
+    -fx-spacing: 10;
+    -fx-padding: 0 10 0 0;
+}
+
+/* Style pour les boutons d'action du formulaire */
+.cancel-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-font-size: 14px;
+}
+
+.save-button {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-font-size: 14px;
+}
+
+.cancel-button:hover {
+    -fx-background-color: derive(#e74c3c, 10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.save-button:hover {
+    -fx-background-color: derive(#27ae60, 10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+/* Style pour le ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+}
+
+.scroll-pane > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #1a237e;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane > .scroll-bar:vertical > .thumb:hover {
+    -fx-background-color: derive(#1a237e, 20%);
+}
+
+.scroll-pane > .scroll-bar:vertical > .track {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
 }

@@ -10,7 +10,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -105,7 +107,10 @@ public class AgentMenuController implements Initializable {
 
         document.setTitreDocument(titreField.getText());
         document.setDescriptionDocument(descriptionField.getText());
+        
+        // Utiliser le chemin du fichier sélectionné
         document.setUrlDocument(urlField.getText());
+        
         document.setTagsDocuments(Arrays.asList(tagsField.getText().split(",")));
 
         if (documentEnEdition == null) {
@@ -265,6 +270,27 @@ public class AgentMenuController implements Initializable {
         });
     }
 
+    @FXML
+    private void handleBrowseFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sélectionner un fichier");
+        
+        // Configurer les filtres de fichiers (optionnel)
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Tous les fichiers", "*.*"),
+            new FileChooser.ExtensionFilter("Documents PDF", "*.pdf"),
+            new FileChooser.ExtensionFilter("Documents Word", "*.docx", "*.doc"),
+            new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        
+        // Ouvrir la fenêtre de sélection de fichier
+        Stage stage = (Stage) urlField.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        
+        if (selectedFile != null) {
+            // Mettre à jour le champ URL avec le chemin du fichier sélectionné
+            urlField.setText(selectedFile.getAbsolutePath());
+        }
+    }
 
 }
-

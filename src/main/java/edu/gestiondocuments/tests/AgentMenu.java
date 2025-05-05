@@ -46,8 +46,8 @@ public class AgentMenu extends Application {
             primaryStage.setScene(scene);
 
             // Définir les dimensions de la fenêtre
-            primaryStage.setWidth(810);
-            primaryStage.setHeight(600);
+            primaryStage.setWidth(1000);
+            primaryStage.setHeight(700);
 
 
             primaryStage.setResizable(false);
